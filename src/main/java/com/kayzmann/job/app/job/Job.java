@@ -1,12 +1,22 @@
 package com.kayzmann.job.app.job;
 
+import jakarta.persistence.*;
+
+@Entity
+//@Table(name = "job_table")
 public class Job {
-    private static Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Long title;
     private String description;
     private String minSalary;
     private String maxSalary;
     private String location;
+
+    //JPA Entity
+    public Job() {
+    }
 
     public Job(Long id, Long title, String description, String minSalary, String maxSalary, String location) {
         this.id = id;
@@ -17,7 +27,7 @@ public class Job {
         this.location = location;
     }
 
-    public static Long getId() {
+    public Long getId() {
         return id;
     }
 
