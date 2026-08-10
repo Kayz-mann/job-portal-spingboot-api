@@ -1,7 +1,7 @@
 package com.kayzmann.job.app.job;
 
 public class Job {
-    private Long id;
+    private static Long id;
     private Long title;
     private String description;
     private String minSalary;
@@ -17,7 +17,7 @@ public class Job {
         this.location = location;
     }
 
-    public Long getId() {
+    public static Long getId() {
         return id;
     }
 
@@ -30,14 +30,14 @@ public class Job {
     }
 
     public String getMinSalary() {
-        return minSalary;
+        return this.minSalary;
     }
 
     public String getMaxSalary() {
         return maxSalary;
     }
 
-    public String getLovation() {
+    public String getLocation() {
         return location;
     }
 
@@ -61,7 +61,8 @@ public class Job {
         this.maxSalary = maxSalary;
     }
 
-    public void setLovation(String location) {
+    public void setLocation(String location) {
         this.location = location;
     }
+
 }
