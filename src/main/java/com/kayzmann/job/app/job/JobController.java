@@ -41,7 +41,7 @@ public class JobController {
         boolean deleted =  jobService.deleteJobById(id);
         if(deleted)
 
-        return new ResponseEntity<>("Job deleted Succefully", HttpStatus.OK);
+        return new ResponseEntity<>("Job deleted Successfully", HttpStatus.OK);
 
         return null;
     }
