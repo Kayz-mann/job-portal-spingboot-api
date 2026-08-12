@@ -1,5 +1,6 @@
 package com.kayzmann.job.app.company;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kayzmann.job.app.job.Job;
 import jakarta.persistence.*;
 
@@ -14,8 +15,9 @@ public class Company {
     private String name;
     private String description;
 
+    @JsonIgnore  //remove recursive error
     //every company has a list of jobs
-    @OneToMany
+    @OneToMany(mappedBy = "company")
     private List<Job> jobs;
 
     //Reviews mapping afterwards

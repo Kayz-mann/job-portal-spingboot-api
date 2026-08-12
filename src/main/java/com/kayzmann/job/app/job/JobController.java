@@ -1,5 +1,6 @@
 package com.kayzmann.job.app.job;
 
+import com.kayzmann.job.app.company.Company;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class JobController {
     @PostMapping
     public ResponseEntity<String> createJob( @RequestBody Job job){
         jobService.createJob(job);
+        Company c  =  job.getCompany();
         return new ResponseEntity<>("Job added successfully", HttpStatus.CREATED) ;
     }
 
