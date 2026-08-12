@@ -54,4 +54,8 @@ public class Company {
     public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
     }
+
+    public void set() {
+
+    }
 }
