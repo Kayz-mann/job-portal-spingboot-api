@@ -1,5 +1,6 @@
 package com.kayzmann.job.app.review;
 
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,13 +36,22 @@ public class ReviewController {
 
     }
 
-    @PutMapping("/reviews/reviewId")
+    @PutMapping("/reviews/{reviewId}")
     public ResponseEntity<String> updateReview(@PathVariable Long companyId, @PathVariable Long reviewId, @RequestBody Review review){
         boolean isReviewUpdated = reviewService.updateReview(companyId,reviewId, review);
 
         if(isReviewUpdated)
            return new ResponseEntity<>("Review updated successfully", HttpStatus.OK);
         else
-            return new ResponseEntity<>("Review not updated", HttpStatus.NOT_FOUND)
+            return new ResponseEntity<>("Review not updated", HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/reviews/{reviewId}")
+    public ResponseEntity<String> deleteReview(@PathVariable Long companyId, @PathVariable Long reviewId){
+        boolean isReviewDeleted =  reviewService.deleteReview(companyId, reviewId);
+        if(isReviewDeleted)
+            return new ResponseEntity<>("Review deleted successfully", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("review is not deleted", HttpStatus.NOT_FOUND);
     }
 }
