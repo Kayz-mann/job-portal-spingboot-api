@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     container_name: postgres_container
@@ -14,11 +12,11 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - jobnet
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U kayzmann -d jobapp"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
       retries: 5
 
@@ -34,30 +32,74 @@ services:
     ports:
       - "5050:80"
     networks:
-      - postgres
+      - jobnet
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
 
-  job-app:
-    build: .
-    container_name: job_app_container
+  companyms:
+    build:
+      context: .
+      dockerfile: ./companyms/Dockerfile
+    container_name: company_ms_container
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/jobapp
+      SPRING_DATASOURCE_USERNAME: kayzmann
+      SPRING_DATASOURCE_PASSWORD: kayzmann
+    networks:
+      - jobnet
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  reviewms:
+    build:
+      context: .
+      dockerfile: ./reviewms/Dockerfile
+    container_name: review_ms_container
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/jobapp
+      SPRING_DATASOURCE_USERNAME: kayzmann
+      SPRING_DATASOURCE_PASSWORD: kayzmann
+    networks:
+      - jobnet
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  jobms:
+    build:
+      context: .
+      dockerfile: ./jobms/Dockerfile
+    container_name: job_ms_container
     ports:
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/jobapp
       SPRING_DATASOURCE_USERNAME: kayzmann
       SPRING_DATASOURCE_PASSWORD: kayzmann
+      COMPANY_SERVICE_URL: http://companyms:8081
+      REVIEW_SERVICE_URL: http://reviewms:8082
     networks:
-      - postgres
+      - jobnet
     depends_on:
       postgres:
         condition: service_healthy
+      companyms:
+        condition: service_started
+      reviewms:
+        condition: service_started
     restart: unless-stopped
 
 networks:
-  postgres:
+  jobnet:
     driver: bridge
 
 volumes:
