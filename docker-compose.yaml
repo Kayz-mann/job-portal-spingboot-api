@@ -38,6 +38,17 @@ services:
       postgres:
         condition: service_healthy
 
+  servicereg:
+    build:
+      context: .
+      dockerfile: ./servicereg/Dockerfile
+    container_name: service_reg_container
+    ports:
+      - "8761:8761"
+    networks:
+      - jobnet
+    restart: unless-stopped
+
   companyms:
     build:
       context: .
@@ -49,11 +60,14 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/jobapp
       SPRING_DATASOURCE_USERNAME: kayzmann
       SPRING_DATASOURCE_PASSWORD: kayzmann
+      EUREKA_SERVER_URL: http://servicereg:8761/eureka/
     networks:
       - jobnet
     depends_on:
       postgres:
         condition: service_healthy
+      servicereg:
+        condition: service_started
     restart: unless-stopped
 
   reviewms:
@@ -67,11 +81,14 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/jobapp
       SPRING_DATASOURCE_USERNAME: kayzmann
       SPRING_DATASOURCE_PASSWORD: kayzmann
+      EUREKA_SERVER_URL: http://servicereg:8761/eureka/
     networks:
       - jobnet
     depends_on:
       postgres:
         condition: service_healthy
+      servicereg:
+        condition: service_started
     restart: unless-stopped
 
   jobms:
@@ -85,13 +102,16 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/jobapp
       SPRING_DATASOURCE_USERNAME: kayzmann
       SPRING_DATASOURCE_PASSWORD: kayzmann
-      COMPANY_SERVICE_URL: http://companyms:8081
-      REVIEW_SERVICE_URL: http://reviewms:8082
+      EUREKA_SERVER_URL: http://servicereg:8761/eureka/
+      COMPANY_SERVICE_URL: http://companyms
+      REVIEW_SERVICE_URL: http://reviewms
     networks:
       - jobnet
     depends_on:
       postgres:
         condition: service_healthy
+      servicereg:
+        condition: service_started
       companyms:
         condition: service_started
       reviewms:
