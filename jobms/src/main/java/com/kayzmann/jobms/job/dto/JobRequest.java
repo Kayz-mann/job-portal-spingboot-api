@@ -1,30 +1,14 @@
 package com.kayzmann.jobms.job.dto;
 
-import com.kayzmann.jobms.job.external.Company;
-import com.kayzmann.jobms.job.external.Review;
-
-import java.util.List;
-
-public class JobDTO {
-    private Long id;
+public class JobRequest {
     private String title;
     private String description;
     private String minSalary;
     private String maxSalary;
     private String location;
     private Long companyId;
-    private Company company;
-    private List<Review> reviews;
 
-    public JobDTO() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public JobRequest() {
     }
 
     public String getTitle() {
@@ -73,21 +57,5 @@ public class JobDTO {
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
     }
 }
