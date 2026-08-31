@@ -1,6 +1,7 @@
 package com.kayzmann.jobms.job;
 
 import com.kayzmann.jobms.job.dto.JobDTO;
+import com.kayzmann.jobms.job.dto.JobRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,8 @@ public class JobController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createJob(@RequestBody Job job) {
-        jobService.createJob(job);
+    public ResponseEntity<String> createJob(@RequestBody JobRequest jobRequest) {
+        jobService.createJob(jobRequest);
         return new ResponseEntity<>("Job added successfully", HttpStatus.CREATED);
     }
 
@@ -46,8 +47,8 @@ public class JobController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateJob(@PathVariable Long id, @RequestBody Job updatedJob) {
-        boolean updated = jobService.updateJob(id, updatedJob);
+    public ResponseEntity<String> updateJob(@PathVariable Long id, @RequestBody JobRequest jobRequest) {
+        boolean updated = jobService.updateJob(id, jobRequest);
         if (updated) {
             return new ResponseEntity<>("Job updated successfully", HttpStatus.OK);
         }
