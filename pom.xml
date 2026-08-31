@@ -12,6 +12,7 @@
 	<description>Parent Monorepo for Job App Microservices</description>
 
 	<modules>
+		<module>servicereg</module>
 		<module>jobms</module>
 		<module>companyms</module>
 		<module>reviewms</module>
